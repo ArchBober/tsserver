@@ -8,6 +8,7 @@ export async function handlerChirpsValidate(req: Request, res: Response) {
   };
 
   const params: parameters = req.body;
+  const cenzuredWords: string[] = ["kerfuffle", "sharbert", "fornax"]
 
   const maxChirpLength = 140;
   if (params.body.length > maxChirpLength) {
@@ -15,7 +16,16 @@ export async function handlerChirpsValidate(req: Request, res: Response) {
     return;
   }
 
+  const validBody: string[] = []
+  for (let word of params.body.split(" ")) {
+    if (cenzuredWords.includes(word.toLocaleLowerCase())) {
+        validBody.push("****")
+    } else {
+        validBody.push(word)
+    }
+  }
+
   respondWithJSON(res, 200, {
-    valid: true,
+    cleanedBody: validBody.join(" "),
     });
 }
