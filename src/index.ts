@@ -13,7 +13,9 @@ const app = express();
 const PORT = 8080;
 
 app.use(middlewareLogResponse);
+app.use(express.json());
 app.use("/app", middlewareMetricsInc, express.static("./src/app"));
+
 
 app.get("/api/healthz", handlerReadiness);
 app.get("/admin/metrics", handlerMetrics);
