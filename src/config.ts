@@ -1,5 +1,7 @@
 type APIConfig = {
-  fileserverHits: number;
+  fileServerHits: number;
 };
 
-const config = {fileserverhits: 0}
+export const config: APIConfig = {
+  fileServerHits: 0,
+};
