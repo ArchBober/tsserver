@@ -7,6 +7,7 @@ import { handlerChirpsValidate } from "./api/validatechirp.js";
 import {
   middlewareLogResponse,
   middlewareMetricsInc,
+  middlewareError,
 } from "./api/middleware.js";
 
 const app = express();
@@ -20,7 +21,10 @@ app.use("/app", middlewareMetricsInc, express.static("./src/app"));
 app.get("/api/healthz", handlerReadiness);
 app.get("/admin/metrics", handlerMetrics);
 app.post("/admin/reset", handlerReset);
-app.post("/api/validate_chirp", handlerChirpsValidate);
+app.post("/api/validate_chirp", (req, res, next) => {
+  Promise.resolve(handlerChirpsValidate(req, res)).catch(next)});
+
+app.use(middlewareError);
 
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
