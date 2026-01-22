@@ -8,6 +8,13 @@
       "when": 1769051922587,
       "tag": "0000_sweet_azazel",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1769057431481,
+      "tag": "0001_nervous_shiva",
+      "breakpoints": true
     }
   ]
 }
