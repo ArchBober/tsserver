@@ -1,4 +1,7 @@
 import express from "express";
+import postgres from "postgres";
+import { migrate } from "drizzle-orm/postgres-js/migrator";
+import { drizzle } from "drizzle-orm/postgres-js";
 
 import { handlerReadiness } from "./api/readiness.js";
 import { handlerMetrics } from "./api/metrics.js";
@@ -10,8 +13,12 @@ import {
   errorMiddleWare,
 } from "./api/middleware.js";
 
+import { config } from "./config.js";
+
+const migrationClient = postgres(config.db.url, { max: 1 });
+await migrate(drizzle(migrationClient), config.db.migrationConfig);
+
 const app = express();
-const PORT = 8080;
 
 app.use(middlewareLogResponse);
 app.use(express.json());
@@ -26,8 +33,8 @@ app.post("/api/validate_chirp", (req, res, next) => {
 
 app.use(errorMiddleWare);
 
-app.listen(PORT, () => {
-  console.log(`Server is running at http://localhost:${PORT}`);
+app.listen(config.api.port, () => {
+  console.log(`Server is running at http://localhost:${config.api.port}`);
 });
 
 
